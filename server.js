@@ -29,6 +29,8 @@ app.get('/', homeHandler);
 app.get('/test', testHandler);
 app.get('/getBooks', getBooksHandler);
 app.get('*', defualtHandler);
+app.post('/addBooks', addBooksHandler);
+app.delete('/deleteBooks/:id', deleteBookHandler);
 
 
 // http://localhost:3010/
@@ -46,7 +48,7 @@ function defualtHandler(req, res) {
   res.status(404).send("Page not found :(");
 }
 
-
+// http://localhost:3010/getBooks
 function getBooksHandler(req, res) {
   BookModel.find({}, (err, result) => {
     if (err) {
@@ -58,6 +60,31 @@ function getBooksHandler(req, res) {
     }
   })
 }
+
+// http://localhost:3010/addBooks
+async function addBooksHandler(req, res) {
+    const { title, description, status } = req.body;
+  
+    await BookModel.create({
+      title: title,
+      description: description,
+      status: status
+});}
+
+// http://localhost:3010/deleteBooks/:id
+function deleteBookHandler(req, res) {
+    const bookID = req.params.id;
+    // console.log(req.params.id)
+    BookModel.findByIdAndDelete( bookID , (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        // console.log(result);
+        res.send(result);
+      }
+    })
+  }
+
 
 //initial data
 async function seedData() {
@@ -85,7 +112,7 @@ async function seedData() {
   
 
   }
-  //seedData();
+  seedData();
 
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);
