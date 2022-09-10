@@ -1,14 +1,14 @@
 'use strict';
 
 require('dotenv').config();
-const {response} = require('express');
-const mongoose = require('mongoose'); 
+const { response } = require('express');
+const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
 
 const app = express();
 
-app.use(cors()); 
+app.use(cors());
 app.use(express.json());
 const PORT = process.env.PORT || 3010;
 
@@ -51,7 +51,9 @@ function defualtHandler(req, res) {
 
 // http://localhost:3010/getBooks
 function getBooksHandler(req, res) {
-  BookModel.find({}, (err, result) => {
+  const name = req.query.name
+
+  BookModel.find({name:name}, (err, result) => {
     if (err) {
       console.log(err);
     }
@@ -64,27 +66,34 @@ function getBooksHandler(req, res) {
 
 // http://localhost:3010/addBooks
 async function addBooksHandler(req, res) {
-    const { title, description, status } = req.body;
-  
-    await BookModel.create({
-      title: title,
-      description: description,
-      status: status
-});}
+  const { title, description, status } = req.body;
+
+  await BookModel.create({
+    title: title,
+    description: description,
+    status: status
+  });
+}
 
 // http://localhost:3010/deleteBooks/:id
 function deleteBookHandler(req, res) {
-    const bookID = req.params.id;
-    // console.log(req.params.id)
-    BookModel.findByIdAndDelete( bookID , (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        // console.log(result);
-        res.send(result);
+  const bookID = req.params.id;
+  const name = req.query.name
+  BookModel.findByIdAndDelete(bookID, (err, result) => {
+    book.find({name:name},(err,result)=>{ 
+      if(err)
+      {
+          console.log(err);
       }
-    })
-  }
+      else
+      {
+          // console.log(result);
+          res.send(result);
+      }
+  })
+    
+  })
+}
 
 // http://localhost:3010/updateBooks/:id
 function updateBookHandler(req, res) {
@@ -103,31 +112,31 @@ function updateBookHandler(req, res) {
 
 //initial data
 async function seedData() {
-    const firstBook = new BookModel({
-        title:"Da Vinci Code",
-        description:"Symbologist Robert Langdon travels from Paris to London to unravel a bizarre murder. Accompanied by a cryptographer, he soon comes across a religious enigma protected by an age-old secret society.",
-        state: "available"
-    })
+  const firstBook = new BookModel({
+    title: "Da Vinci Code",
+    description: "Symbologist Robert Langdon travels from Paris to London to unravel a bizarre murder. Accompanied by a cryptographer, he soon comes across a religious enigma protected by an age-old secret society.",
+    state: "available"
+  })
 
-    const secondBook = new BookModel({
-        title:"Harry Potter and the Deathly Hallows",
-        description:"After Voldemort takes over the Ministry of Magic, Harry, Ron and Hermione are forced into hiding. They try to decipher the clues left to them by Dumbledore to find and destroy Voldemort's Horcruxes.",
-        state: "available"
-    })
+  const secondBook = new BookModel({
+    title: "Harry Potter and the Deathly Hallows",
+    description: "After Voldemort takes over the Ministry of Magic, Harry, Ron and Hermione are forced into hiding. They try to decipher the clues left to them by Dumbledore to find and destroy Voldemort's Horcruxes.",
+    state: "available"
+  })
 
-    const thirdBook = new BookModel({
-        title:"Life of Pi",
-        description:"Molitor Pi Patel, a Tamil boy from Pondicherry, explores issues of spirituality and practicality from an early age. He survives 227 days after a shipwreck while stranded on a boat in the Pacific Ocean with a Bengal tiger named Richard Parker.",
-        state: "sold-out"
-    })
-  
-    await firstBook.save();
-    await secondBook.save();
-    await thirdBook.save();
-  
+  const thirdBook = new BookModel({
+    title: "Life of Pi",
+    description: "Molitor Pi Patel, a Tamil boy from Pondicherry, explores issues of spirituality and practicality from an early age. He survives 227 days after a shipwreck while stranded on a boat in the Pacific Ocean with a Bengal tiger named Richard Parker.",
+    state: "sold-out"
+  })
 
-  }
-  seedData();
+  await firstBook.save();
+  await secondBook.save();
+  await thirdBook.save();
+
+
+}
+//seedData();
 
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);
