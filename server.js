@@ -31,6 +31,7 @@ app.get('/getBooks', getBooksHandler);
 app.get('*', defualtHandler);
 app.post('/addBooks', addBooksHandler);
 app.delete('/deleteBooks/:id', deleteBookHandler);
+app.put('/updateBooks/:id', updateBookHandler);
 
 
 // http://localhost:3010/
@@ -85,6 +86,20 @@ function deleteBookHandler(req, res) {
     })
   }
 
+// http://localhost:3010/updateBooks/:id
+function updateBookHandler(req, res) {
+  const id = req.params.id;
+  const { title, description, status } = req.body;
+
+  BookModel.findByIdAndUpdate(id, { title, description, status }, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  })
+
+}
 
 //initial data
 async function seedData() {
