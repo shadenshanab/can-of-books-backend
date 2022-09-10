@@ -1,7 +1,7 @@
 {
-  "name": "auth0TestBack",
+  "name": "auth0testback",
   "version": "1.0.0",
-  "description": "",
+  "description": "This repository has starter code to begin work on creating your own online bookshelf.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,11 +11,22 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@auth0/auth0-spa-js": "^1.22.4",
     "axios": "^0.27.2",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.18.1",
+    "heroku": "^7.63.0",
     "mongoose": "^6.5.4",
+    "node": "^18.9.0",
     "nodemon": "^2.0.19"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shadenshanab/can-of-books-backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shadenshanab/can-of-books-backend/issues"
+  },
+  "homepage": "https://github.com/shadenshanab/can-of-books-backend#readme"
 }
